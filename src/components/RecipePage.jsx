@@ -61,7 +61,7 @@ export default function RecipePage() {
   const nextRecipe = recipeIndex < recipes.length - 1 ? recipes[recipeIndex + 1] : null
 
   const navItems = [
-    { id: 'video-guide',   label: 'Video',        show: !!recipe.videoId },
+    { id: 'video-guide',   label: 'Video',        show: !!(recipe.video || recipe.videoId) },
     { id: 'ingredients',   label: 'Ingredients',  show: true },
     { id: 'instructions',  label: 'Instructions', show: true },
     { id: 'nutrition',     label: 'Nutrition',    show: true },
@@ -183,9 +183,13 @@ export default function RecipePage() {
               <p className="recipe-description">{recipe.description}</p>
             </section>
 
-            {/* Video */}
-            {recipe.videoId && (
-              <VideoEmbed videoId={recipe.videoId} title={recipe.videoTitle || recipe.title} />
+            {/* Video — supports YouTube (videoId), Instagram Reels, and TikTok (video object) */}
+            {(recipe.video || recipe.videoId) && (
+              <VideoEmbed
+                video={recipe.video}
+                videoId={recipe.videoId}
+                videoTitle={recipe.video?.title ?? recipe.videoTitle ?? recipe.title}
+              />
             )}
 
             {/* Ingredients */}

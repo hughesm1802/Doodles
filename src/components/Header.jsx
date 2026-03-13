@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { siteConfig } from '../data/siteConfig'
 
 export default function Header() {
   const [searchQuery, setSearchQuery] = useState('')
@@ -21,8 +22,8 @@ export default function Header() {
         <Link to="/" className="site-logo" onClick={() => setMenuOpen(false)}>
           <span className="logo-icon">🍽️</span>
           <span className="logo-text">
-            <span className="logo-primary">The Culinary</span>
-            <span className="logo-secondary">Ebook</span>
+            <span className="logo-primary">{siteConfig.brand}</span>
+            <span className="logo-secondary">{siteConfig.creator.handle}</span>
           </span>
         </Link>
 

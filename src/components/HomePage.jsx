@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import recipes, { categories } from '../data/recipes'
+import { siteConfig } from '../data/siteConfig'
+import CreatorProfile from './CreatorProfile'
 
 const FEATURED_IDS = [
   'spaghetti-carbonara',
@@ -25,14 +27,14 @@ export default function HomePage() {
           <div className="hero-overlay" />
         </div>
         <div className="hero-content container">
-          <div className="hero-badge">The Complete Culinary Collection</div>
+          <div className="hero-badge">{siteConfig.brand}</div>
           <h1 className="hero-title">
             Recipes Worth<br />
             <em>Mastering</em>
           </h1>
           <p className="hero-subtitle">
-            Step-by-step video guides, precise ingredient lists, and full nutritional breakdowns
-            for dishes from eight world cuisines — all in one beautifully crafted ebook.
+            {siteConfig.tagline} — step-by-step video guides (YouTube, Instagram &amp; TikTok),
+            precise ingredient lists, and full nutritional breakdowns, all in one place.
           </p>
           <div className="hero-actions">
             <Link to="/contents" className="btn btn-primary btn-lg">
@@ -76,7 +78,7 @@ export default function HomePage() {
             <div className="feature-card">
               <div className="feature-icon">🎬</div>
               <h3>Video Walkthroughs</h3>
-              <p>Embedded HD video guides for every recipe so you can watch as you cook, pause and replay critical steps.</p>
+              <p>Embedded videos from YouTube, Instagram Reels, and TikTok — watch the creator cook each dish, pause and replay critical steps.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">📋</div>
@@ -151,6 +153,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Creator Profile */}
+      <CreatorProfile />
 
       {/* Table of Contents preview */}
       <section className="toc-preview-section">
