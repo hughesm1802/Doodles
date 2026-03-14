@@ -1033,6 +1033,64 @@ const recipes = [
       allergens: ['Fish', 'Crustaceans', 'Gluten (soy sauce)', 'Sesame', 'Eggs (mayo)'],
     },
   },
+
+  // ─── Instagram Reel Recipe ─────────────────────────────────────────────────
+  // TODO: Replace placeholder values once recipe details are confirmed.
+  {
+    id: 'instagram-reel-DVq-JlUiJut',
+    title: 'My Latest Recipe',
+    subtitle: 'As seen on Instagram',
+    category: 'american',
+    description:
+      'This recipe comes straight from my Instagram Reel — watch the video for the full step-by-step technique, then follow the instructions below.',
+    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80',
+    imageAlt: 'Delicious home-cooked recipe',
+
+    // Instagram Reel embed
+    video: {
+      type:  'instagram',
+      url:   'https://www.instagram.com/reel/DVq-JlUiJut/',
+      title: 'My Latest Recipe — Instagram Reel',
+    },
+
+    prepTime:   '15 min',
+    cookTime:   '30 min',
+    totalTime:  '45 min',
+    servings:   4,
+    difficulty: 'Easy',
+    tags: ['homemade', 'easy', 'weeknight'],
+    chef: 'Your Name',
+
+    ingredients: [
+      { group: 'Ingredients', items: [
+        { amount: '—', item: 'Replace with your ingredients', note: 'Add quantities and notes' },
+      ]},
+    ],
+
+    steps: [
+      {
+        step: 1,
+        title: 'Watch the Reel',
+        instruction: 'Watch the Instagram Reel above for the full visual walkthrough, then follow the written steps below.',
+        tip: 'Replace these placeholder steps with your actual recipe instructions.',
+        image: null,
+      },
+    ],
+
+    nutrition: {
+      servingSize: '1 serving',
+      calories: 400,
+      macros: [
+        { label: 'Protein',        value: '20 g',   percent: 40, color: '#4ade80' },
+        { label: 'Carbohydrates',  value: '45 g',   percent: 45, color: '#facc15' },
+        { label: 'Total Fat',      value: '12 g',   percent: 15, color: '#f87171' },
+        { label: 'Dietary Fibre',  value: '4 g',    percent: 8,  color: '#86efac' },
+        { label: 'Sodium',         value: '500 mg', percent: 22, color: '#7dd3fc' },
+      ],
+      vitamins:  [],
+      allergens: [],
+    },
+  },
 ]
 
 export default recipes
