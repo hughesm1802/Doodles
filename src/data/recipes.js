@@ -5,14 +5,15 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const categories = [
-  { id: 'italian',  label: 'Italian',   icon: '🇮🇹' },
-  { id: 'mexican',  label: 'Mexican',   icon: '🇲🇽' },
-  { id: 'indian',   label: 'Indian',    icon: '🇮🇳' },
-  { id: 'japanese', label: 'Japanese',  icon: '🇯🇵' },
-  { id: 'american', label: 'American',  icon: '🇺🇸' },
-  { id: 'french',   label: 'French',    icon: '🇫🇷' },
-  { id: 'thai',     label: 'Thai',      icon: '🇹🇭' },
-  { id: 'desserts', label: 'Desserts',  icon: '🍰' },
+  { id: 'caribbean', label: 'Caribbean', icon: '🌴' },
+  { id: 'italian',   label: 'Italian',   icon: '🇮🇹' },
+  { id: 'mexican',   label: 'Mexican',   icon: '🇲🇽' },
+  { id: 'indian',    label: 'Indian',    icon: '🇮🇳' },
+  { id: 'japanese',  label: 'Japanese',  icon: '🇯🇵' },
+  { id: 'american',  label: 'American',  icon: '🇺🇸' },
+  { id: 'french',    label: 'French',    icon: '🇫🇷' },
+  { id: 'thai',      label: 'Thai',      icon: '🇹🇭' },
+  { id: 'desserts',  label: 'Desserts',  icon: '🍰' },
 ]
 
 const recipes = [
@@ -1034,61 +1035,149 @@ const recipes = [
     },
   },
 
-  // ─── Instagram Reel Recipe ─────────────────────────────────────────────────
-  // TODO: Replace placeholder values once recipe details are confirmed.
+  // ─── Grammy's Caribbean Curry with Added Gut Support ─────────────────────
   {
-    id: 'instagram-reel-DVq-JlUiJut',
-    title: 'My Latest Recipe',
-    subtitle: 'As seen on Instagram',
-    category: 'american',
+    id: 'grammys-caribbean-curry',
+    title: "Grammy's Caribbean Curry",
+    subtitle: 'With added gut support',
+    category: 'caribbean',
     description:
-      'This recipe comes straight from my Instagram Reel — watch the video for the full step-by-step technique, then follow the instructions below.',
-    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1200&q=80',
-    imageAlt: 'Delicious home-cooked recipe',
+      "A rich, fragrant curry passed down from Grammy, rooted in the bold flavours of the Caribbean — scotch bonnet heat, allspice warmth, fresh thyme, and creamy coconut milk. Every ingredient has been chosen not just for flavour but for your gut: anti-inflammatory turmeric and ginger, prebiotic-rich sweet potato and chickpeas, fibre-packed callaloo or spinach, and a swirl of live coconut kefir stirred in off the heat to keep those probiotics alive. Soul food that loves your microbiome back.",
+    image: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=1200&q=80',
+    imageAlt: "Grammy's Caribbean Curry — golden coconut broth, sweet potato and chickpeas",
 
-    // Instagram Reel embed
     video: {
       type:  'instagram',
       url:   'https://www.instagram.com/reel/DVq-JlUiJut/',
-      title: 'My Latest Recipe — Instagram Reel',
+      title: "Grammy's Caribbean Curry — Instagram Reel",
     },
 
-    prepTime:   '15 min',
-    cookTime:   '30 min',
-    totalTime:  '45 min',
+    prepTime:   '20 min',
+    cookTime:   '50 min',
+    totalTime:  '1 hr 10 min',
     servings:   4,
-    difficulty: 'Easy',
-    tags: ['homemade', 'easy', 'weeknight'],
+    difficulty: 'Medium',
+    tags: ['caribbean', 'curry', 'gut health', 'turmeric', 'coconut', 'gluten-free', 'dairy-free'],
     chef: 'Your Name',
 
     ingredients: [
-      { group: 'Ingredients', items: [
-        { amount: '—', item: 'Replace with your ingredients', note: 'Add quantities and notes' },
+      { group: 'Marinade', items: [
+        { amount: '800 g',   item: 'bone-in chicken thighs',              note: 'skin on for maximum flavour; remove if preferred' },
+        { amount: '2 tbsp',  item: 'Caribbean curry powder',               note: 'use a Jamaican-style blend with allspice and scotch bonnet' },
+        { amount: '1 tsp',   item: 'ground turmeric',                      note: 'gut-supportive and anti-inflammatory' },
+        { amount: '1 tbsp',  item: 'fresh ginger, finely grated',          note: 'aids digestion and reduces bloating' },
+        { amount: '4 cloves',item: 'garlic, crushed' },
+        { amount: '½ tsp',   item: 'ground allspice' },
+        { amount: '1 tsp',   item: 'fine sea salt' },
+        { amount: '1 tbsp',  item: 'apple cider vinegar',                  note: 'raw, with the mother — supports stomach acid and gut lining' },
+      ]},
+      { group: 'Curry Base', items: [
+        { amount: '2 tbsp',  item: 'coconut oil' },
+        { amount: '1 large', item: 'brown onion, finely diced' },
+        { amount: '3 cloves',item: 'garlic, sliced' },
+        { amount: '1 tbsp',  item: 'fresh ginger, grated' },
+        { amount: '1',       item: 'scotch bonnet chilli',                 note: 'whole for mild heat, pierced for medium, finely chopped for hot' },
+        { amount: '4 sprigs',item: 'fresh thyme' },
+        { amount: '2',       item: 'spring onions (scallions), sliced' },
+        { amount: '2',       item: 'medium tomatoes, roughly chopped' },
+        { amount: '400 ml',  item: 'full-fat coconut milk',                note: 'shake the can well before opening' },
+        { amount: '300 ml',  item: 'low-sodium chicken or vegetable stock' },
+      ]},
+      { group: 'Gut-Support Additions', items: [
+        { amount: '1 large', item: 'sweet potato (approx. 350 g), cubed',  note: 'skin on for extra prebiotic fibre — just scrub well' },
+        { amount: '400 g',   item: 'tin chickpeas, drained and rinsed',    note: 'prebiotic fibre feeds beneficial gut bacteria' },
+        { amount: '100 g',   item: 'callaloo or baby spinach',             note: 'callaloo is traditional; spinach is a great substitute' },
+        { amount: '4 tbsp',  item: 'live coconut kefir',                   note: 'stir in off the heat to preserve the live cultures' },
+        { amount: '1 tsp',   item: 'ground turmeric',                      note: 'second hit of turmeric — add to the pot as it simmers' },
+      ]},
+      { group: 'To Serve', items: [
+        { amount: '',        item: 'brown rice or cauliflower rice',        note: 'brown rice adds extra fibre; cauliflower rice keeps it grain-free' },
+        { amount: '',        item: 'fresh coriander (cilantro), roughly torn' },
+        { amount: '',        item: 'lime wedges' },
+        { amount: '',        item: 'scotch bonnet hot sauce',               note: 'optional, for table heat' },
       ]},
     ],
 
     steps: [
       {
         step: 1,
-        title: 'Watch the Reel',
-        instruction: 'Watch the Instagram Reel above for the full visual walkthrough, then follow the written steps below.',
-        tip: 'Replace these placeholder steps with your actual recipe instructions.',
+        title: 'Marinate the chicken',
+        instruction:
+          'Combine the curry powder, turmeric, grated ginger, crushed garlic, allspice, salt, and apple cider vinegar in a large bowl. Add the chicken thighs and toss to coat every surface. Cover and marinate in the fridge for at least 30 minutes — overnight gives the best flavour and the ACV begins to tenderise the meat.',
+        tip: 'The apple cider vinegar in the marinade is not just for flavour — the acetic acid helps break down the protein fibres for more tender chicken and supports stomach acid production when you eat it.',
+        image: null,
+      },
+      {
+        step: 2,
+        title: 'Brown the chicken',
+        instruction:
+          'Heat the coconut oil in a large, heavy-based pot or Dutch oven over medium-high heat. Remove the chicken from the marinade (reserve the marinade) and brown the pieces skin-side down for 4–5 minutes until deep golden. Flip and brown the other side for 2–3 minutes. Remove and set aside — the chicken will finish cooking in the sauce.',
+        tip: "Don't rush the browning. The Maillard reaction creates the deep flavour base that carries the whole dish. A crowded pan steams rather than sears — work in two batches if needed.",
+        image: null,
+      },
+      {
+        step: 3,
+        title: 'Build the aromatic base',
+        instruction:
+          'Reduce heat to medium. In the same pot, add the diced onion and cook for 5–6 minutes until soft and translucent. Add the sliced garlic, grated ginger, whole (or chopped) scotch bonnet, spring onions, and thyme sprigs. Cook for another 2 minutes, stirring constantly. Add the chopped tomatoes and cook until they break down and the mixture becomes jammy, about 4 minutes.',
+        tip: 'Keeping the scotch bonnet whole gives you Caribbean flavour without overwhelming heat — the oils infuse the broth without releasing full capsaicin. Remove before serving for family-friendly heat.',
+        image: null,
+      },
+      {
+        step: 4,
+        title: 'Add liquid and return the chicken',
+        instruction:
+          'Pour in the reserved marinade, coconut milk, and stock. Stir well, scraping up any browned bits from the base of the pot — that is all flavour. Add the second teaspoon of turmeric and stir through. Return the browned chicken to the pot, nestling the pieces into the broth. Bring to a gentle boil, then reduce to a low simmer, partially cover, and cook for 20 minutes.',
+        tip: 'Scraping the fond (the browned bits on the bottom) is one of the most important flavour steps in any braise. Do not skip it.',
+        image: null,
+      },
+      {
+        step: 5,
+        title: 'Add the gut-support vegetables',
+        instruction:
+          'Add the cubed sweet potato and drained chickpeas to the pot. Stir gently, making sure the vegetables are submerged in the broth. Continue simmering uncovered for 15–18 minutes until the sweet potato is tender when pierced with a knife and the sauce has thickened slightly. Remove the thyme sprigs and the scotch bonnet if you used it whole.',
+        tip: 'Sweet potato skin-on adds resistant starch — a type of prebiotic fibre that feeds Bifidobacterium and Lactobacillus strains in your gut. Just scrub the skin thoroughly before cubing.',
+        image: null,
+      },
+      {
+        step: 6,
+        title: 'Wilt the greens and add kefir',
+        instruction:
+          'Remove the pot from the heat. Stir in the callaloo or baby spinach and let it wilt in the residual heat for 1–2 minutes. Once the pot is no longer actively simmering, stir in the coconut kefir one tablespoon at a time until fully incorporated. Taste and adjust salt.',
+        tip: 'This is the most important gut-support step: kefir must go in off the heat. Temperatures above 40 °C kill the live cultures. Let the pot cool slightly and the kefir will swirl through the creamy coconut broth beautifully without curdling.',
+        image: null,
+      },
+      {
+        step: 7,
+        title: 'Plate and serve',
+        instruction:
+          'Spoon the curry over brown rice or cauliflower rice. Top with fresh torn coriander and a squeeze of fresh lime. Serve with extra scotch bonnet sauce at the table. The curry keeps for 3 days in the fridge — the flavours deepen overnight.',
+        tip: 'Add the kefir fresh when reheating leftovers rather than reheating it with the curry, so the live cultures are preserved in every serving.',
         image: null,
       },
     ],
 
     nutrition: {
-      servingSize: '1 serving',
-      calories: 400,
+      servingSize: '1 bowl (approx. 450 g, without rice)',
+      calories: 545,
       macros: [
-        { label: 'Protein',        value: '20 g',   percent: 40, color: '#4ade80' },
-        { label: 'Carbohydrates',  value: '45 g',   percent: 45, color: '#facc15' },
-        { label: 'Total Fat',      value: '12 g',   percent: 15, color: '#f87171' },
-        { label: 'Dietary Fibre',  value: '4 g',    percent: 8,  color: '#86efac' },
-        { label: 'Sodium',         value: '500 mg', percent: 22, color: '#7dd3fc' },
+        { label: 'Protein',        value: '38 g',   percent: 38,  color: '#4ade80' },
+        { label: 'Carbohydrates',  value: '42 g',   percent: 32,  color: '#facc15' },
+        { label: 'Total Fat',      value: '24 g',   percent: 24,  color: '#f87171' },
+        { label: 'Saturated Fat',  value: '16 g',   percent: 15,  color: '#fca5a5' },
+        { label: 'Dietary Fibre',  value: '9 g',    percent: 30,  color: '#86efac' },
+        { label: 'Sodium',         value: '620 mg', percent: 27,  color: '#7dd3fc' },
+        { label: 'Sugars',         value: '8 g',    percent: 9,   color: '#fde68a' },
       ],
-      vitamins:  [],
-      allergens: [],
+      vitamins: [
+        { label: 'Vitamin A',      value: '95% DV',  note: 'from sweet potato and callaloo' },
+        { label: 'Vitamin C',      value: '40% DV',  note: 'from scotch bonnet and tomato' },
+        { label: 'Iron',           value: '28% DV',  note: 'from chickpeas and greens' },
+        { label: 'Curcumin',       value: 'High',    note: 'anti-inflammatory compound from turmeric' },
+        { label: 'Live Cultures',  value: '~1 billion CFU', note: 'from coconut kefir — add off heat to preserve' },
+        { label: 'Potassium',      value: '32% DV',  note: 'from sweet potato and coconut milk' },
+      ],
+      allergens: ['Tree nuts (coconut)'],
     },
   },
 ]
