@@ -1,36 +1,42 @@
 // ─────────────────────────────────────────────────────────────
-// Business profile: what the Bee learns at onboarding.
-// Ember & Crust is a FICTIONAL business used for the demo.
-// In production this is built from a 15-minute onboarding chat
-// plus the business's website, past emails and social posts.
+// Store profile for ONE tenant. Ember & Crust is a FICTIONAL Irish
+// Shopify store used for the demo (ICP: 1–20 staff, no in-house
+// marketer, no agency). In production this comes from the onboarding
+// questionnaire plus the store's existing site copy, and every row the
+// engine reads carries this storeId (row-level security per tenant).
 // ─────────────────────────────────────────────────────────────
 
 // Fixed "today" so the demo is reproducible.
 export const TODAY = '2026-11-05';
 
 export const business = {
+  storeId: 'st_7f3a91',
+  platform: 'Shopify',
+  forwardingAddress: 'questions@embercrust.workerbee.ie',
+  christmasCutoff: '2026-12-17', // last order date for Christmas delivery
   name: 'Ember & Crust',
   owner: 'Siobhán',
   location: 'Cork, Ireland',
-  type: 'Wood-fired pizza kits, delivered nationwide + a small coffee bar',
+  type: 'Online store selling wood-fired pizza kits, delivered nationwide',
   website: 'embercrust.example',
   audience: 'Families and couples doing a Friday "fakeaway", plus offices booking team pizza nights',
-  staff: ['Aoife', 'Darragh', 'Tomás', 'Niamh'],
+  staff: 4,
 
   products: [
-    { id: 'margherita', name: 'Margherita Pizza Kit', price: 22, cat: 'kit' },
-    { id: 'pepperoni', name: 'Pepperoni Pizza Kit', price: 24, cat: 'kit' },
-    { id: 'nduja', name: 'Nduja & Chilli Kit', price: 26, cat: 'kit' },
-    { id: 'vegan', name: 'Vegan Garden Kit', price: 24, cat: 'kit' },
-    { id: 'kids', name: 'Kids Party Kit (6 minis)', price: 30, cat: 'kit' },
-    { id: 'gf-base', name: 'Gluten-Free Base Add-on', price: 5, cat: 'addon' },
-    { id: 'hot-honey', name: 'Chilli Hot Honey 250ml', price: 8.5, cat: 'addon' },
-    { id: 'garlic-dip', name: 'Garlic & Herb Dip', price: 3.5, cat: 'addon' },
-    { id: 'cookie', name: 'Cookie Dough Tub', price: 7, cat: 'addon' },
-    { id: 'beans', name: 'House Espresso Beans 1kg', price: 32, cat: 'coffee' },
-    { id: 'stone', name: 'Cordierite Pizza Stone', price: 45, cat: 'gear' },
-    { id: 'peel', name: 'Bamboo Pizza Peel', price: 28, cat: 'gear' },
-    { id: 'team-box', name: 'Team Pizza Night Box (per head)', price: 24, cat: 'corporate' },
+    // stock: units on hand (null = made to order, so no overstock check)
+    { id: 'margherita', name: 'Margherita Pizza Kit', price: 22, cat: 'kit', stock: null },
+    { id: 'pepperoni', name: 'Pepperoni Pizza Kit', price: 24, cat: 'kit', stock: null },
+    { id: 'nduja', name: 'Nduja & Chilli Kit', price: 26, cat: 'kit', stock: null },
+    { id: 'vegan', name: 'Vegan Garden Kit', price: 24, cat: 'kit', stock: null },
+    { id: 'kids', name: 'Kids Party Kit (6 minis)', price: 30, cat: 'kit', stock: null },
+    { id: 'gf-base', name: 'Gluten-Free Base Add-on', price: 5, cat: 'addon', stock: 90 },
+    { id: 'hot-honey', name: 'Chilli Hot Honey 250ml', price: 8.5, cat: 'addon', stock: 60 },
+    { id: 'garlic-dip', name: 'Garlic & Herb Dip', price: 3.5, cat: 'addon', stock: 70 },
+    { id: 'cookie', name: 'Cookie Dough Tub', price: 7, cat: 'addon', stock: 90 },
+    { id: 'beans', name: 'Espresso Beans 1kg (for the morning after)', price: 32, cat: 'extra', stock: 40 },
+    { id: 'stone', name: 'Cordierite Pizza Stone', price: 45, cat: 'gear', stock: 25 },
+    { id: 'peel', name: 'Bamboo Pizza Peel', price: 28, cat: 'gear', stock: 110 },
+    { id: 'team-box', name: 'Team Pizza Night Box (per head)', price: 24, cat: 'corporate', stock: null },
   ],
 
   // Pairs already sold as a bundle (so the Bee doesn't suggest them again)
@@ -38,7 +44,7 @@ export const business = {
 
   // Words that make a news story relevant to this business
   industryKeywords: [
-    'pizza', 'hospitality', 'restaurant', 'takeaway', 'food', 'coffee', 'cafe',
+    'pizza', 'hospitality', 'restaurant', 'takeaway', 'food', 'e-commerce', 'online retail',
     'delivery', 'small business', 'independent', 'cork', 'artisan', 'sourdough',
     'packaging', 'gluten', 'coeliac', 'corporate', 'christmas', 'meal kit', 'fakeaway',
   ],
@@ -116,7 +122,6 @@ export const business = {
     instructions: ['instructions', 'video', 'guide', 'easy to follow', 'qr code'],
     delivery: ['delivery', 'arrived', 'courier', 'late', 'delayed'],
     packaging: ['packaging', 'plastic', 'tubs', 'recycl', 'waste'],
-    coffee: ['coffee', 'espresso', 'flat white', 'latte', 'beans'],
     glutenfree: ['gluten', 'coeliac'],
     value: ['price', 'value', 'expensive', 'worth', 'pricey'],
   },
@@ -125,7 +130,6 @@ export const business = {
     instructions: 'Easy instructions & how-to video',
     delivery: 'Delivery timing',
     packaging: 'Packaging & plastic',
-    coffee: 'Coffee bar',
     glutenfree: 'Gluten-free options',
     value: 'Value for money',
   },
@@ -147,6 +151,6 @@ export const defaultBrand = {
   hashtags: ['#EmberAndCrust', '#CorkFood', '#PizzaNight', '#ShopLocalIreland'],
   avoid: ['cheap', 'best in the world', 'authentic Italian'],
   channels: {
-    instagram: true, reel: true, blog: true, email: true, gbp: true, linkedin: true, press: true,
+    blog: true, email: true, instagram: true, reel: true, ads: true, linkedin: true, press: true,
   },
 };

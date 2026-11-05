@@ -1,39 +1,37 @@
-import { matchedKeywords, matchesAny, daysAgo } from '../text.js';
+import { matchedKeywords, matchesAny, daysAgo, bucket } from '../text.js';
 
 /**
- * Industry news → timely "have your say" opportunities.
- * Relevance = industry keyword overlap (title counts double) + topic match.
- * Timeliness decays over ~2 weeks: news is only an opportunity while it's news.
+ * Signal 9 (Phase 2): industry news. Keyword match on the store's topic list.
+ * Relevance = industry keywords (title counts double) + a watched-topic match.
  */
-export function detectNews(news, business) {
+export function detectNews(news, store, cfg) {
+  const { enabled, params: p } = cfg.news;
+  if (!enabled) return [];
   const opps = [];
   for (const a of news) {
-    const titleHits = matchedKeywords(a.title, business.industryKeywords);
-    const bodyHits = matchedKeywords(a.summary, business.industryKeywords);
-    const topic = business.topics.find((t) => matchesAny(`${a.title} ${a.summary}`, t.keywords));
-    const relevance = titleHits.length * 2 + bodyHits.length + (topic ? 2 : 0);
+    const titleHits = matchedKeywords(a.title, store.industryKeywords);
+    const bodyHits = matchedKeywords(a.summary, store.industryKeywords);
+    const topic = store.topics.find((t) => matchesAny(`${a.title} ${a.summary}`, t.keywords));
+    const relevance = Math.min(10, titleHits.length * 2 + bodyHits.length + (topic ? 2 : 0));
     const age = daysAgo(a.date);
-    if (relevance < 4 || age > 21) continue;
-    const stance = business.stances[topic?.id] || business.stances.default;
+    if (relevance < p.minRelevance || age > p.maxAgeDays) continue;
     opps.push({
       id: `news-${a.id}`,
+      signal: 'news',
       kind: 'opinion',
       category: 'PR',
+      mergeKey: `news:${a.id}`,
       topic: topic?.id || `news:${a.id}`,
       sources: ['news'],
+      output: 'social',
       title: `Have your say: “${a.title}”`,
-      insight: `${a.outlet} · ${age === 0 ? 'today' : `${age} day${age === 1 ? '' : 's'} ago`} · relevance ${Math.min(10, relevance)}/10`,
-      why: `Journalists and customers look for local voices when a story like this breaks. A short, honest take from you positions ${business.name} as the business that leads on this, and it's only timely for about a week.`,
+      whyNow: `${a.outlet}, ${age} day${age === 1 ? '' : 's'} ago. Relevance ${relevance}/10 to your topics${topic ? ` (${topic.label.toLowerCase()})` : ''}. Only timely for about a week.`,
+      doThis: 'Post a short owner opinion on LinkedIn and use it as this week’s newsletter angle.',
       evidence: [{ source: 'news', date: a.date, who: a.outlet, text: `${a.title}. ${a.summary}` }],
-      metrics: [
-        { label: 'Relevance', value: `${Math.min(10, relevance)}/10` },
-        { label: 'Matched', value: [...new Set([...titleHits, ...bodyHits])].slice(0, 4).join(', ') },
-      ],
-      impact: topic ? 4 : 3,
-      confidence: Math.min(1, 0.3 + relevance * 0.07),
-      urgency: Math.max(0, 1 - age / 14),
-      effort: 'Low',
-      data: { article: a, stance, topic },
+      metrics: [{ label: 'Relevance', value: `${relevance}/10` }, { label: 'Age', value: `${age} days` }],
+      impact: topic ? 3 : 2,
+      volume: bucket(relevance, [3, 5, 7, 9]),
+      data: { article: a, stance: store.stances[topic?.id] || store.stances.default, topic },
     });
   }
   return opps;

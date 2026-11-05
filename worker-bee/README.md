@@ -1,113 +1,61 @@
 # Marketing Worker Bee 🐝
 
-**A marketing engine for small businesses. It reads the business's own data, finds the opportunities hidden in it, and drafts the content, so the owner can get back to the work that grows the business.**
+**You run the business. Worker Bee spots the marketing in it.**
 
-> Real marketing is great service and lasting memories in customers' minds. The Worker Bee handles the rest: what to post, when, where, and at what aspect ratio.
+Worker Bee turns a small e-commerce store's own data into a ranked weekly list of marketing opportunities, each with a draft ready to approve. It is the CMO a 1–20 person store can't afford.
 
-This folder is a **clickable prototype**. It is built around *Ember & Crust*, a **fictional** Cork pizza-kit and coffee business, with realistic sample data.
+- **Opportunity-first, not content-first.** It says *what is worth saying*, grounded in the store's data, before writing anything.
+- **Closed loop.** Every approved opportunity is measured, and the results reshape future suggestions.
+- **Suggest-only.** Nothing publishes without the owner's approval.
+
+This folder is the **clickable MVP prototype**, aligned to the *MVP Spec (5 Nov 2026)*. It runs on sample data for *Ember & Crust*, a **fictional** Irish Shopify store. The build rules and the full spec summary are in [`CLAUDE.md`](./CLAUDE.md).
 
 ```bash
 cd worker-bee
 npm install
-npm run dev        # the app
-npm run engine     # the opportunity engine on its own, prints the ranked feed
+npm run dev                  # the app
+npm run engine               # headless engine run: ranked list + Monday digest
+npm run engine -- --phase2   # include Phase 2 signals (news, lapsed customers)
 ```
 
----
+## What's in the prototype
 
-## The problem
-
-| Small business owner | Today's options |
-|---|---|
-| Too busy to think about marketing | Post whatever, whenever, or nothing |
-| Too small for a CMO or an agency | Agencies run generic calendars and don't read the inbox, orders or reviews |
-| Sitting on gold: customer questions, buying patterns, reviews | That data sits in 5 different tools and no one connects it |
-
-**The insight:** the best marketing ideas are already in the business's data. A question 6 customers emailed is a blog post. Two products bought together are a bundle. A record order is a PR story. A staff member named in 5 reviews is a thank-you, and then a team spotlight.
-
----
-
-## What the prototype does
-
-1. **Reads** 5 sources: inbox, Shopify orders, Google reviews, industry news, Search Console.
-2. **Detects** opportunities with explainable logic. Every card shows its evidence.
-3. **Combines signals across sources.** If customers email a question *and* Google shows search demand, those merge into one stronger opportunity.
-4. **Scores** each one: `impact × confidence × timeliness × effort`.
-5. **Drafts** ready-to-use content per channel, already sized and specced (9:16 Reel scripts, 4:5 Instagram, GBP posts, blog briefs with FAQPage schema, press pitches, review replies, Shopify bundle setups).
-6. **Plans**: approved items are slotted into a 2-week calendar on each channel's best days.
-7. **Keeps it human**: a "Moments that matter" panel shows service moments (a regular's 10th order, a staff member praised by name) that are *not* content. They are relationships.
-
-### Detectors (`src/engine/detectors/`)
-
-| Source | Detector | Becomes |
+| Screen | What it shows | Spec section |
 |---|---|---|
-| Inbox | Question sentences matched to watched topics (≥ 3 = pattern) | Blog/FAQ page + Reel + saved inbox reply |
-| Inbox | Large quantities / € values + consent phrases ("happy for you to share") | PR story with a permission check |
-| Orders | Market-basket analysis: support, confidence, **lift ≥ 2** | Bundle: Shopify setup, price, promo content |
-| Orders | Share of orders, last 4 weeks vs previous 8 (≥ +50%) | "Rising star" spotlight + product idea |
-| Orders | Orders ≥ €1,000 in the last 21 days | PR / case study |
-| Orders | Customers hitting their 10th / 25th / 50th order this week | Handwritten-note prompt (private, never posted) |
-| Reviews | Aspect-based sentiment, sentence level | Repeated praise → testimonials · repeated complaints → **fix first**, then "we listened" |
-| Reviews | Staff named in ≥ 3 five-star reviews | Thank-you note + team spotlight (with consent) |
-| Reviews | Unreplied reviews, worst first | Drafted replies |
-| News | Industry-keyword relevance + topic match, decays over 14 days | LinkedIn take, journalist pitch, talking-head Reel, built from the owner's stated views |
-| Search | Topic demand ranking > position 5 / no page | Content gap (merged with inbox questions) |
-| Search | Queries in positions 4–15 on existing pages | Title/meta/FAQ quick wins |
+| **Monday digest** | Top 5 by ICE, each card with Why now / Do this / Draft ready / We'll measure and the buttons Approve · Edit · Not now · Not relevant. Private notes (ops flags, customer thank-yous) sit below, outside the top 5 | Scoring & weekly digest |
+| **Review queue** | Every detected opportunity with evidence, ICE breakdown, hand-off on approval, measurement plan, editable drafts, and the Claude API brief with personal data stripped | Suggest-only workflow; pilot review |
+| **Results & learning** | Pilot success metrics vs targets; live items with measurement windows; log win / neutral / miss and watch Confidence and the ranking change; learned track record per signal | Feedback loop & measurement |
+| **Signal library** | The 10 signals + Irish retail calendar, on/off and editable thresholds per store; Phase 2 signals start as off previews | Signal library |
+| **Data sources** | Sources by phase with access notes, per-store sync health, forwarding address, email integration path, GDPR handling | Data sources, email integration, compliance |
+| **Brand voice** | Tone, never-say list (every draft is checked), channels | Brand-voice onboarding |
 
-On the sample data the engine finds **23 opportunities and 81 drafts (about 42 hours of marketing work)**. 13 of them are backed by more than one source.
+On the sample data the MVP signals find **20 opportunities**. The digest's top 5 are:
+1. Bundle the Nduja kit with Hot Honey: 97 co-orders, lift 2.9 (ICE 100)
+2. Black Friday: 22 days to go (100)
+3. Christmas delivery cut-off: 42 days to go (100)
+4. Freezing & storing kits: 3 customer questions plus 2,710 search impressions at positions 15–20 (75)
+5. Corporate pizza nights: 3 questions plus searches up 225% (75)
 
-### Guardrails built in
-- **Evidence-first:** no generic "content ideas". Every card traces to real records.
-- **Consent checks** wherever a customer, client or staff member is named.
-- **Brand check** flags any phrase on the owner's "never say" list.
-- **Fix before you market:** recurring complaints are routed to operations first.
-- **Never invents commitments:** anything the owner must decide is left in `[brackets]`.
+12 more are held back on purpose. Two recurring complaints (delivery timing, plastic packaging) go to the owner as private ops notes.
 
----
-
-## From prototype to product
+## How the engine works
 
 ```
- Connectors            Opportunity engine              Generation             Owner
-┌───────────┐   ┌─────────────────────────────┐   ┌─────────────────┐   ┌────────────┐
-│ Gmail/365 │   │ detectors (rules + stats)   │   │ LLM agent with  │   │ Weekly     │
-│ Shopify   │──▶│ + LLM classification/       │──▶│ brand profile,  │──▶│ briefing,  │
-│ GBP       │   │   clustering                │   │ evidence and    │   │ approve /  │
-│ GSC / GA4 │   │ merge → link → score        │   │ channel specs   │   │ snooze /   │
-│ News/RSS  │   └─────────────────────────────┘   └─────────────────┘   │ dismiss    │
-└───────────┘         ▲                                     │           └─────┬──────┘
-                      └──── learns from approvals / dismissals ◀──────────────┘
+ nightly sync          detect (one module per source)       merge + link        learn            rank                 digest
+┌──────────────┐     ┌──────────────────────────────┐     ┌──────────────┐   ┌────────────┐   ┌───────────────┐   ┌──────────────┐
+│ Shopify      │──▶  │ shopify.js  #3 #6 #7 #8 #10  │     │ same key →   │   │ outcomes + │   │ I × C × E     │   │ top 5, Mon   │
+│ GSC (+GA4)   │──▶  │ gsc.js      #4 #5            │ ──▶ │ one opp,     │──▶│ dismissals │──▶│ (max 125)     │──▶│ 8:00, email  │
+│ Review app   │──▶  │ reviews.js  #2               │     │ more signals │   │ per signal │   │               │   │ + web        │
+│ Fwd. inbox   │──▶  │ inbox.js    #1 (+deal ctx)   │     │ = more conf. │   │ type/store │   └───────────────┘   └──────┬───────┘
+│ Calendar     │──▶  │ calendar.js (seasonal)       │     └──────────────┘   └─────▲──────┘                              │
+│ News (P2)    │──▶  │ news.js     #9               │                                │       approve → hand-off → measure ┘
+└──────────────┘     └──────────────────────────────┘                                └──── win / neutral / miss ◀──────────
 ```
 
-- **What stays the same:** the opportunity schema, merge/score logic and channel specs in `src/engine/`.
-- **What changes:**
-  - The deterministic templates in `drafts.js` are replaced by LLM generation, using the structured brief from `buildPrompt()`. You can see it in the app under "Show the agent brief".
-  - Keyword topic matching is upgraded to embedding clustering, so the Bee finds topics nobody told it to watch.
-- **Feedback loop:** approvals and dismissals train the scoring for each business, so the Bee learns what *this* owner cares about.
-- **Publishing:** Meta / GBP / Mailchimp / Shopify APIs, always behind owner approval.
+## Not in the prototype yet (next build)
+- **Pilot engine in Python.** Scheduled jobs → Postgres (EU) → Postmark digest, with the same signal rules ported over and tested against fixtures.
+- **Real connectors.** Shopify custom app, Google OAuth (GSC + GA4), a review-app API, Postmark inbound.
+- **Claude API drafting.** The prototype uses templates. The brief it would send is shown in the app.
+- **Real hand-off.** Shopify unpublished articles; Klaviyo campaign drafts in Phase 2.
 
-### Suggested MVP path
-| Phase | Scope | Proof point |
-|---|---|---|
-| 0–30 days | Gmail + GBP reviews + Shopify; weekly email briefing; drafts only | 5 pilot businesses open the briefing weekly |
-| 30–60 days | GSC + news; in-app approve/schedule; GBP + Instagram publishing | ≥ 50% of top-3 opportunities approved |
-| 60–90 days | Learning from approvals; GA4 attribution ("this post drove €X") | One pilot can tie revenue to a Bee opportunity |
-
----
-
-## Project structure
-
-```
-worker-bee/
-├── scripts/run-engine.js      # headless engine run
-└── src/
-    ├── data/                  # sample business profile + inbox, orders, reviews, news, search
-    ├── engine/
-    │   ├── detectors/         # one file per data source
-    │   ├── index.js           # merge, link, score
-    │   ├── drafts.js          # channel specs, draft templates, brand check, agent brief
-    │   └── text.js            # matching, sentiment, dates
-    └── components/            # Briefing, Feed, Detail, Draft studio, Plan, Sources, Brand
-```
-
-All sample data (business, people, companies, news outlets and articles) is fictional.
+All sample data (store, people, companies, news outlets and articles) is fictional.

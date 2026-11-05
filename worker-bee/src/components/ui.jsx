@@ -5,10 +5,14 @@ import { SOURCE_LABELS } from '../engine/index.js';
 const paths = {
   home: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
   spark: 'M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z',
-  calendar: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
   plug: 'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4',
   palette: 'M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5S14 15 15 15h2a4 4 0 0 0 4-4c0-4.4-4-8-9-8zM7.5 11.5h.01M10 7.5h.01M15 8h.01',
-  email: 'M3 6h18v12H3zM3 7l9 6 9-6',
+  inbox: 'M3 6h18v12H3zM3 7l9 6 9-6',
+  calendar: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+  chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+  sliders: 'M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0M14 4v4M8 10v4M16 16v4',
+  edit: 'M4 20h4L19 9l-4-4L4 16zM14 6l4 4',
+  lock: 'M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3',
   orders: 'M4 5h2l2 10h10l2-7H7M9 20h.01M17 20h.01',
   reviews: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z',
   news: 'M4 5h13v14H6a2 2 0 0 1-2-2zM17 9h3v8a2 2 0 0 1-2 2M8 9h5M8 13h5M8 16h3',
@@ -53,20 +57,16 @@ export function SourceChip({ source, compact = false }) {
 }
 
 export function CategoryChip({ category }) {
-  return <span className={`cat-chip cat-${category.toLowerCase()}`}>{category}</span>;
+  return <span className={`cat-chip cat-${category.toLowerCase().replace(/[^a-z]+/g, '-')}`}>{category}</span>;
 }
 
-export function Score({ value, size = 44 }) {
-  const r = (size - 6) / 2;
-  const c = 2 * Math.PI * r;
+/** ICE chip: Impact × Confidence × Ease */
+export function Ice({ o, big = false }) {
   return (
-    <div className="score" style={{ width: size, height: size }} title={`Opportunity score ${value}/100`}>
-      <svg width={size} height={size}>
-        <circle cx={size / 2} cy={size / 2} r={r} className="score-track" />
-        <circle cx={size / 2} cy={size / 2} r={r} className="score-fill" strokeDasharray={`${(c * value) / 100} ${c}`} transform={`rotate(-90 ${size / 2} ${size / 2})`} />
-      </svg>
-      <span>{value}</span>
-    </div>
+    <span className={`ice ${big ? 'ice-big' : ''}`} title="Impact × Confidence × Ease (max 125)">
+      <b>{o.ice}</b>
+      <small>{o.impact}×{o.confidence}×{o.ease}</small>
+    </span>
   );
 }
 
@@ -88,4 +88,4 @@ export function CopyButton({ text, label = 'Copy' }) {
   );
 }
 
-export const STATUS_LABEL = { approved: 'Approved', snoozed: 'Snoozed', dismissed: 'Dismissed' };
+export const STATUS_LABEL = { approved: 'Approved', snoozed: 'Not now · 30 days', notrelevant: 'Not relevant' };

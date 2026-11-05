@@ -5,43 +5,69 @@ import { orders } from './data/orders.js';
 import { reviews } from './data/reviews.js';
 import { news } from './data/news.js';
 import { searchQueries } from './data/search.js';
-import { runEngine } from './engine/index.js';
+import { retailCalendar } from './data/calendar.js';
+import { history, pilotStats } from './data/history.js';
+import { detect, learn, rank } from './engine/index.js';
+import { defaultSignalConfig } from './engine/signals.js';
 import { usePersistentState } from './lib/store.js';
+import { TODAY } from './data/business.js';
 import { BeeMark, Icon } from './components/ui.jsx';
-import Briefing from './components/Briefing.jsx';
+import Digest from './components/Digest.jsx';
 import Feed from './components/Feed.jsx';
-import Plan from './components/Plan.jsx';
+import Results from './components/Results.jsx';
+import Signals from './components/Signals.jsx';
 import Sources from './components/Sources.jsx';
 import BrandProfile from './components/BrandProfile.jsx';
 
-const DATA = { emails, orders, reviews, news, searchQueries };
+const DATA = { emails, orders, reviews, news, searchQueries, calendar: retailCalendar };
 
 const NAV = [
-  { id: 'briefing', label: 'Briefing', icon: 'home' },
-  { id: 'feed', label: 'Opportunities', icon: 'spark' },
-  { id: 'plan', label: 'Plan', icon: 'calendar' },
+  { id: 'digest', label: 'Monday digest', icon: 'home' },
+  { id: 'feed', label: 'Review queue', icon: 'spark' },
+  { id: 'results', label: 'Results & learning', icon: 'chart' },
+  { id: 'signals', label: 'Signal library', icon: 'sliders' },
   { id: 'sources', label: 'Data sources', icon: 'plug' },
-  { id: 'brand', label: 'Brand & voice', icon: 'palette' },
+  { id: 'brand', label: 'Brand voice', icon: 'palette' },
 ];
 
-export default function App() {
-  const [view, setView] = useState('briefing');
-  const [selectedId, setSelectedId] = useState(null);
-  const [brand, setBrand] = usePersistentState('wb.brand.v1', defaultBrand);
-  const [statuses, setStatuses] = usePersistentState('wb.status.v1', {});
+function mergeConfig(saved) {
+  const base = defaultSignalConfig();
+  for (const [k, v] of Object.entries(saved || {})) {
+    if (base[k]) base[k] = { enabled: v.enabled ?? base[k].enabled, params: { ...base[k].params, ...v.params } };
+  }
+  return base;
+}
 
-  const opps = useMemo(() => runEngine(DATA, business), []);
+export default function App() {
+  const [view, setView] = useState('digest');
+  const [selectedId, setSelectedId] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [brand, setBrand] = usePersistentState('wb.brand.v2', defaultBrand);
+  const [statuses, setStatuses] = usePersistentState('wb.status.v2', {});
+  const [savedCfg, setSavedCfg] = usePersistentState('wb.signals.v1', {});
+  const [edits, setEdits] = usePersistentState('wb.edits.v1', {});
+
+  const cfg = useMemo(() => mergeConfig(savedCfg), [savedCfg]);
+  const detected = useMemo(() => detect(DATA, business, cfg), [cfg]);
+  const learning = useMemo(() => learn(history, statuses, detected, pilotStats), [statuses, detected]);
+  const opps = useMemo(() => rank(detected, learning), [detected, learning]);
 
   const setStatus = (id, status) => setStatuses((s) => {
     const next = { ...s };
-    if (status) next[id] = status; else delete next[id];
+    if (status) next[id] = { ...(s[id] || {}), status, at: TODAY };
+    else delete next[id];
     return next;
   });
+  const patchStatus = (id, patch) => setStatuses((s) => ({ ...s, [id]: { ...s[id], ...patch } }));
 
-  const open = (id) => { setSelectedId(id); setView('feed'); window.scrollTo(0, 0); };
+  const open = (id, edit = false) => { setSelectedId(id); setEditMode(edit); setView('feed'); window.scrollTo(0, 0); };
   const go = (id) => { setView(id); if (id !== 'feed') setSelectedId(null); window.scrollTo(0, 0); };
-  const newCount = opps.filter((o) => !statuses[o.id]).length;
-  const ctx = { opps, statuses, setStatus, brand, setBrand, business, data: DATA, open, go };
+  const reset = () => { setStatuses({}); setBrand(defaultBrand); setSavedCfg({}); setEdits({}); };
+
+  const ctx = {
+    opps, statuses, setStatus, patchStatus, brand, setBrand, business, data: DATA, open, go,
+    cfg, setSavedCfg, learning, history, pilotStats, edits, setEdits, editMode, setEditMode,
+  };
 
   return (
     <div className="app">
@@ -50,7 +76,7 @@ export default function App() {
           <BeeMark />
           <div>
             <strong>Worker Bee</strong>
-            <small>for {business.name}</small>
+            <small>{business.name} · {business.storeId}</small>
           </div>
         </div>
         <nav>
@@ -58,19 +84,19 @@ export default function App() {
             <button key={n.id} type="button" className={`nav-item ${view === n.id ? 'active' : ''}`} onClick={() => go(n.id)}>
               <Icon name={n.icon} />
               <span>{n.label}</span>
-              {n.id === 'feed' && newCount > 0 && <em className="badge">{newCount}</em>}
             </button>
           ))}
         </nav>
         <div className="sidebar-foot">
-          <p className="demo-note">Prototype with sample data. {business.name} is a fictional business.</p>
-          <button type="button" className="btn-link" onClick={() => { setStatuses({}); setBrand(defaultBrand); }}>Reset demo</button>
+          <p className="demo-note">MVP prototype · sample data. {business.name} is a fictional Shopify store. Suggest-only: nothing is ever published.</p>
+          <button type="button" className="btn-link" onClick={reset}>Reset demo</button>
         </div>
       </aside>
       <main className="main">
-        {view === 'briefing' && <Briefing {...ctx} />}
+        {view === 'digest' && <Digest {...ctx} />}
         {view === 'feed' && <Feed {...ctx} selectedId={selectedId} setSelectedId={setSelectedId} />}
-        {view === 'plan' && <Plan {...ctx} />}
+        {view === 'results' && <Results {...ctx} />}
+        {view === 'signals' && <Signals {...ctx} />}
         {view === 'sources' && <Sources {...ctx} />}
         {view === 'brand' && <BrandProfile {...ctx} />}
       </main>

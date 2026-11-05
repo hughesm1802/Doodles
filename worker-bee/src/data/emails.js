@@ -1,4 +1,6 @@
-// Sample inbox (hello@ mailbox): last ~10 weeks. Fictional people and companies.
+// Sample forwarding inbox: the owner auto-forwards customer questions to
+// questions@<store>.workerbee.ie (Postmark inbound). Fictional people and companies.
+// Raw text is kept 90 days; after that only the question clusters are retained.
 export const emails = [
   { id: 'e1', from: 'Ciara M.', date: '2026-08-21', subject: 'Freezing the dough?', body: 'Hi there, we got the Margherita kit as a gift but we are away this weekend. Can I freeze the dough balls and use them next week? Thanks!' },
   { id: 'e2', from: 'Paul D.', date: '2026-08-29', subject: 'Gluten free', body: 'Hello, my daughter is coeliac. Do you do a gluten-free version of the kids party kit? Her birthday is in October.' },
@@ -11,8 +13,9 @@ export const emails = [
   { id: 'e9', from: 'Niall H.', date: '2026-09-22', subject: 'Freezer', body: 'Can the sauce and the dough go in the freezer? Bought two kits on offer.' },
   { id: 'e10', from: 'Aisling W.', date: '2026-09-26', subject: 'Belfast?', body: 'Do you ship to Northern Ireland? I’m in Belfast and my friends in Cork rave about you.' },
   { id: 'e11', from: 'Brian S.', date: '2026-09-30', subject: 'Wholesale', body: 'Hi, I run a small café in Kinsale. Would you sell your hot honey wholesale?' },
-  { id: 'e12', from: 'Fiona G.', date: '2026-10-02', subject: 'GF party', body: 'Hi! Three kids coming to the party are gluten free. Can I add gluten-free bases to the kids party kit?' },
-  { id: 'e13', from: 'Declan P.', date: '2026-10-04', subject: 'Normal oven temp', body: 'What temperature should I use for a normal oven? The card says “hottest setting” but mine goes to 275, is that too hot?' },
+  { id: 'e30', from: 'Hannah W.', org: 'Corrib Legal', date: '2026-11-04', subject: 'Client gifts', body: 'We send Christmas gifts to 25 clients. Do you do corporate gift orders with one invoice, shipped to each address?' },
+  { id: 'e12', from: 'Fiona G.', date: '2026-10-08', subject: 'GF party', body: 'Hi! Three kids coming to the party are gluten free. Can I add gluten-free bases to the kids party kit?' },
+  { id: 'e13', from: 'Declan P.', date: '2026-10-11', subject: 'Normal oven temp', body: 'What temperature should I use for a normal oven? The card says “hottest setting” but mine goes to 275, is that too hot?' },
   { id: 'e14', from: 'Sarah L.', org: 'Lumen Analytics', date: '2026-10-07', subject: 'Christmas party idea', body: 'We’re looking at a remote Christmas party for 40 colleagues across Ireland. Do you do corporate packages with an invoice for the company? What would pricing look like?' },
   { id: 'e15', from: 'Orla N.', date: '2026-10-09', subject: 'Best before', body: 'The best before on the sauce is Friday but the dough says Sunday. How long can I store the dough for really?' },
   { id: 'e16', from: 'Kevin A.', date: '2026-10-12', subject: 'Late delivery', body: 'Our kit was meant to arrive Friday but came Saturday afternoon. A bit disappointing as it was for a birthday.' },

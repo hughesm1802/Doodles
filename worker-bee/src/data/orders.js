@@ -38,11 +38,13 @@ function buildBasket(rng, week) {
   const add = (id, q = 1) => { items[id] = (items[id] || 0) + q; };
   const kits = rng() < 0.75 ? 1 : 2;
   for (let i = 0; i < kits; i += 1) {
-    add(pickWeighted(rng, [['margherita', 32], ['pepperoni', 25], ['nduja', 20], ['vegan', 13], ['kids', 10]]));
+    // Vegan kit demand climbs from week 7 (a trend the fast-mover signal should catch)
+    add(pickWeighted(rng, [['margherita', 32], ['pepperoni', 25], ['nduja', 20], ['vegan', 10 + Math.max(0, week - 7) * 3], ['kids', 10]]));
   }
   if (items.nduja) { if (rng() < 0.62) add('hot-honey'); } else if (rng() < 0.07) add('hot-honey');
   if (items.kids) { if (rng() < 0.7) add('cookie'); } else if (rng() < 0.12) add('cookie');
-  if (rng() < 0.02 + 0.009 * week) add('gf-base', kits); // demand rising week on week
+  const gf = week < 8 ? 0.03 + 0.004 * week : 0.062 + 0.02 * (week - 8); // demand accelerating
+  if (rng() < gf) add('gf-base', kits);
   if (rng() < 0.25) add('garlic-dip');
   if (rng() < 0.1) add('beans');
   if (rng() < 0.05) { add('stone'); if (rng() < 0.65) add('peel'); } else if (rng() < 0.015) add('peel');

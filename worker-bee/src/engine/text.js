@@ -41,3 +41,7 @@ export function sentiment(sentence, rating) {
 export const fmtDate = (d) => new Date(d).toLocaleDateString('en-IE', { day: 'numeric', month: 'short' });
 export const euro = (n) => `€${n.toLocaleString('en-IE', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })}`;
 export const pct = (n) => `${Math.round(n * 100)}%`;
+
+/** 1 + number of thresholds passed → 1..5 */
+export const bucket = (x, steps) => 1 + steps.filter((s) => x > s).length;
+export const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
